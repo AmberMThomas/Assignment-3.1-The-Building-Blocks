@@ -1,0 +1,85 @@
+<html><head>
+
+<title>The Game of Craps</title>
+<script language="JavaScript">
+var WON=0, LOST=1, CONTINUE_ROLLING=2;
+
+var firstRoll=true, 
+sumOfDice=0, 
+myPoint=0, 
+gameStatus=CONTINUE_ROLLING;  
+
+function play()
+{
+	if ( firstRoll ) {
+		sumOfDice = rollDice();
+
+	switch (sumOfDice) {
+	case 7: case 11:
+		gameStatus = WON;
+	document.craps.point.value = "";
+	break;
+	case 2: case 3: case 12:
+		gameStatus = LOST;
+	document.craps.point.value = "";
+	break;
+	default:
+		gameStatus = CONTINUE_ROLLING;
+	myPoint = sumOfDice;
+	document.craps.point.value= myPoint;
+	firstRoll = false;
+	}
+}
+	else {
+	sumOfDice = rollDice();
+	if ( sumOfDice == myPoint )
+		gameStatus = WON;
+	else 
+		if (sumOfDice == 7)
+		gameStatus = LOST;
+	}
+
+ if ( gameStatus == CONTINUE_ROLLING )
+	window.alert("Roll again. Point is " + myPoint);
+	else {
+	if ( gameStatus == WON )
+	window.alert("Player Wins. Click Roll Dice to play again.");
+	else
+		window.alert("Player loses. Click Roll Dice to play again.");
+		firstRoll = true;
+	}
+}
+	
+function rollDice()
+{
+	var die1, die2, workSum;
+
+	die1 = Math.floor( 1 + Math.random() * 6 );
+	die2 = Math.floor( 1 + Math.random() * 6 );
+	workSum = die1 + die2;
+	
+document.craps.firstDie.value = die1;
+document.craps.secondDie.value = die2;
+document.craps.sum.value = workSum;
+
+	return workSum;
+}
+</script>
+</head>
+<body>
+<form name="craps">
+<table border="1">
+<tr><td bgcolor="cornflowerblue">Die 1</td>
+<td><input name="firstDie" type="text"></td></tr>
+<tr>
+<td bgcolor="cornflowerblue">Die 2</td>
+<td><input name="secondDie" type="text"></td></tr>
+<tr>
+<td>Sum</td>
+<td><input name="sum" type="text"></td></tr>
+<tr>
+<td>Point</td><td><input name="point" type="text"></td></tr>
+<tr><td><input type="button" value="Roll Dice" onClick="play()"></td></tr>
+</table>
+</form>
+</body></html>
